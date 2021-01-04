@@ -27,7 +27,7 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
         } else {
             //Creamos el usuario
             const newUser = new usuario({ nombre, email, pass });
-            newUser.password = await newUser.encriptar(pass);
+            newUser.pass = await newUser.encriptar(pass);
             await newUser.save();
             res.json({
                 status : 'OK',
