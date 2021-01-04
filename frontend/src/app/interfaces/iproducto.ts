@@ -1,4 +1,5 @@
 export interface IProducto {
+    identificador:string,
     titulo: string,
     descripcion: string,
     idUsuario: string,
