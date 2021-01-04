@@ -91,22 +91,22 @@ usuariosCtrol.login = async (req, res) => {
 usuariosCtrol.verificarToken = (req, res, next) => {
     try {
 		if (!req.headers.authorization) {
-			return res.status(401).send('Petición no autorizada');
+			return res.status(401).send('Solicitud no autorizada');
 		}
 		let token = req.headers.authorization.split(' ')[1];
 		if (token === 'null') {
-			return res.status(401).send('Petición no autorizada');
+			return res.status(401).send('Solicitud no autorizada');
 		}
 
 		const payload = await jwt.verify(token, 'secretkey');
 		if (!payload) {
-			return res.status(401).send('Petición no autorizada');
+			return res.status(401).send('Solicitud no autorizada');
 		}
 		req.userId = payload._id;
 		next();
 	} catch(e) {
 		//console.log(e)
-		return res.status(401).send('Petición no autorizada');
+		return res.status(401).send('Solicitud no autorizada');
 	}
 }
 
