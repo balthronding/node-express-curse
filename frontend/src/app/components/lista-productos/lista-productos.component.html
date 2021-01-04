@@ -1,14 +1,28 @@
-<div fxLayout="row wrap" fxLayoutGap="1em grid">
-    <div fxFlex="33" fxFlex.xs="100" *ngFor="let producto of lista">
-        <mat-card class="tarjeta-producto">
-            <mat-card-header>
-                <mat-card-title><span [matBadge]="producto.puntuacion"
-                        matBadgeOverlap="false">{{producto.titulo}}</span></mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <a mat-button [href]="producto.enlace" target="_blank" rel="noopener nofollow">Ir a Amazon</a>
-            </mat-card-content>
-        </mat-card>
+<div class="no-scroll-container">
+    <div fxLayout="row wrap" fxLayoutGap="1em grid">
+        <div fxFlex="33" fxFlex.xs="100" fxFlex.sm="50" *ngFor="let producto of lista">
+            <mat-card class="tarjeta-producto">
+                <mat-card-header>
+                    <mat-card-title>
+                        <span [matBadge]="producto.puntuacion" matBadgeOverlap="false">{{producto.titulo}}</span>
+                        <button mat-icon-button (click)="editarProducto(producto.identificador)">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button (click)="deleteProducto(producto.identificador)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-card-title>
+
+                    <mat-card-subtitle *ngIf="producto.precio">Precio: {{producto.precio}}€</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{producto.descripcion}}</p>
+                </mat-card-content>
+                <mat-card-actions align="end">
+                    <a mat-button [href]="producto.enlace" target="_blank" rel="noopener nofollow">Ir a Amazon</a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
     </div>
 </div>
 <div class="boton-anadir-producto">
