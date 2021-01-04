@@ -17,7 +17,7 @@ router.get('/api/prueba', (req, res) =>{
 
 router.get('/api/usuarios', controllerUsuario.getUsuarios);
 
-router.post('/api/usuario', controllerUsuario.crearUsuario);
+router.post('/api/usuarios', controllerUsuario.crearUsuario);
 
 router.delete('/api/usuarios/:id', controllerUsuario.eliminarUsuario);
 
