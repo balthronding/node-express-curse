@@ -1,5 +1,5 @@
-export interface IProducto {
-    identificador:string,
+export interface INota {
+    _id:string,
     titulo: string,
     descripcion: string,
     idUsuario: string,

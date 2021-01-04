@@ -5,10 +5,10 @@
                 <mat-card-header>
                     <mat-card-title>
                         <span [matBadge]="producto.puntuacion" matBadgeOverlap="false">{{producto.titulo}}</span>
-                        <button mat-icon-button (click)="editarProducto(producto.identificador)">
+                        <button mat-icon-button (click)="editarProducto(producto._id)">
                             <mat-icon>edit</mat-icon>
                         </button>
-                        <button mat-icon-button (click)="deleteProducto(producto.identificador)">
+                        <button mat-icon-button (click)="deleteProducto(producto._id)">
                             <mat-icon>delete</mat-icon>
                         </button>
                     </mat-card-title>
