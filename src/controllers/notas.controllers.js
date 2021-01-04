@@ -9,7 +9,7 @@ notasCtrol.crearNota = async (req, res) =>{
     if (!titulo) {
       errores.push({ text: "Por favor, escriba un título." });
     }
-    if (!description) {
+    if (!descripcion) {
       errerroresors.push({ text: "Por favor, escriba un descripción." });
     }
     if (!enlace) {
@@ -24,7 +24,7 @@ notasCtrol.crearNota = async (req, res) =>{
       res.json(errores);
     }
     
-    const newNota = new nota({ titulo, descripcion, enlace, puntuacion, precio });
+    const newNota = new nota({ titulo, descripcion, enlace, puntuacion, precio, idUsuario });
     await newNota.save();
 
     res.send("Se ha generado la nota");
@@ -32,7 +32,7 @@ notasCtrol.crearNota = async (req, res) =>{
 
 
 notasCtrol.borrarNota = async (req, res) => {
-    const nota = await nota.findByIdAndDelete(req.params.id)
+    const note = await nota.findByIdAndDelete(req.params.id)
     .then (db => {
         res.json({
             status : "OK",
@@ -44,14 +44,16 @@ notasCtrol.borrarNota = async (req, res) => {
         res.json({
             status : "KO",
             respuesta : "Error al borrar la nota."
-        })
+        });
     });
 }
 
 notasCtrol.obtenerNotas = async (req, res) =>{
-  const notas = await nota.find({idUsuario : req.params.idUsuario});
+  const notas = await nota.find({idUsuario : req.params.id});
   res.json(notas);
 }
+
+
 
 module.exports = notasCtrol;
 
