@@ -4,8 +4,10 @@ const router = Router();
 
 const controllerNotas = require('../controllers/notas.controllers');
 
-router.post('/api/crearNota', controllerNotas.crearNota);
+router.post('/api/nota', controllerNotas.crearNota);
 
-router.delete('/api/borrarNota/:id', controllerNotas.borrarNota);
+router.delete('/api/nota/:id', controllerNotas.borrarNota);
+
+router.get('/api/nota/:id', controllerNotas.obtenerNotas);
 
 module.exports = router;

@@ -13,6 +13,18 @@ const nota = new schema({
     enlace: {
         type: String,
         required: true
+    },
+    puntuacion: {
+        type : Number,
+        require: false
+    },
+    precio:{
+        type : Number,
+        require: false
+    },
+    idUsuario: {
+        type: String,
+        required: true
     } 
 }, {
     timestamps:true,

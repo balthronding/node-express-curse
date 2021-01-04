@@ -4,23 +4,27 @@ const notasCtrol = {};
 const nota = require('../models/nota');
 
 notasCtrol.crearNota = async (req, res) =>{
-    let errors = [];
-    const { titulo, descripcion, enlace } = req.body;    
+    let errores = [];
+    const { titulo, descripcion, enlace, puntuacion, precio, idUsuario } = req.body;    
     if (!titulo) {
-      errors.push({ text: "Por favor, escriba un título." });
+      errores.push({ text: "Por favor, escriba un título." });
     }
     if (!description) {
-      errors.push({ text: "Por favor, escriba un descripción." });
+      errerroresors.push({ text: "Por favor, escriba un descripción." });
     }
     if (!enlace) {
-      errors.push({ text: "Por favor, escriba un enlace" });
+      errores.push({ text: "Por favor, escriba un enlace" });
+    }
+
+    if (!idUsuario) {
+      errores.push({text: "Error en el sistema. No se puede dar de alta una nota sin un usuario asociado"});
     }
   
-    if (errors.length > 0) {
-      res.json(errors);
+    if (errores.length > 0) {
+      res.json(errores);
     }
     
-    const newNota = new nota({ titulo, descripcion, enlace });
+    const newNota = new nota({ titulo, descripcion, enlace, puntuacion, precio });
     await newNota.save();
 
     res.send("Se ha generado la nota");
@@ -42,6 +46,11 @@ notasCtrol.borrarNota = async (req, res) => {
             respuesta : "Error al borrar la nota."
         })
     });
+}
+
+notasCtrol.obtenerNotas = async (req, res) =>{
+  const notas = await nota.find({idUsuario : req.params.idUsuario});
+  res.json(notas);
 }
 
 module.exports = notasCtrol;

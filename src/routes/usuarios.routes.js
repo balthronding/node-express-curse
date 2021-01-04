@@ -15,11 +15,11 @@ router.get('/api/prueba', (req, res) =>{
 
 })
 
-router.get('/api/getUsuarios', controllerUsuario.getUsuarios);
+router.get('/api/usuarios', controllerUsuario.getUsuarios);
 
-router.post('/api/altaUsuario', controllerUsuario.crearUsuario);
+router.post('/api/usuario', controllerUsuario.crearUsuario);
 
-router.delete('/api/delete/:id', controllerUsuario.eliminarUsuario);
+router.delete('/api/usuarios/:id', controllerUsuario.eliminarUsuario);
 
 
 

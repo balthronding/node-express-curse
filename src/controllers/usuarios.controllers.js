@@ -16,12 +16,13 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
     }
 
     if (errors.length > 0) {
-        res.json(errors);
+        res.json(errors);        
     } else {
         const existeEmail = await usuario.findOne({ email: email });
         if (existeEmail) {
             res.json({
-                
+                status : 'KO',
+                respuesta : 'El correo ya está en uso'
             });
         } else {
             //Creamos el usuario
@@ -30,7 +31,7 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
             await newUser.save();
             res.json({
                 status : 'OK',
-                message : 'Usuario creado'
+                respuesta : 'Usuario creado'
             });
         }
     }    
@@ -57,6 +58,8 @@ usuariosCtrol.eliminarUsuario = async (req, res) => {
     });
     
 }
+
+
 
 module.exports = usuariosCtrol;
 
