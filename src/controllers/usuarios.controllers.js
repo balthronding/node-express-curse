@@ -2,6 +2,7 @@ const usuariosCtrol = {};
 
 //Modelo
 const usuario = require('../models/usuario');
+const jwt = require('jsonwebtoken');
 
 
 usuariosCtrol.crearUsuario = async (req, res) =>{
@@ -29,9 +30,11 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
             const newUser = new usuario({ nombre, email, pass });
             newUser.pass = await newUser.encriptar(pass);
             await newUser.save();
+            const token = jwt.sign({_id: newUser._id}, 'secretKey');
             res.json({
                 status : 'OK',
-                respuesta : 'Usuario creado'
+                respuesta : 'Usuario creado',
+                token : token
             });
         }
     }    
@@ -59,7 +62,53 @@ usuariosCtrol.eliminarUsuario = async (req, res) => {
     
 }
 
+usuariosCtrol.login = async (req, res) => {
+    const { email, pass } = req.body;
 
+    const user = await usuario.findOne({email});
+    if(!user) {
+        return res.json({
+            status : "KO",
+            respuesta : "Identificación incorrecta."
+        });
+    }
+
+    if (user.pass != pass) {
+        return res.json({
+            status : "KO",
+            respuesta : "Identificación incorrecta."
+        }); 
+    }
+
+    const token = jwt.sign({_id: user._id}, 'secretKey');
+    return res.json({
+        status : "OK",
+        respuesta : "Identificación correcta.",
+        token : token
+    });
+}
+
+usuariosCtrol.verificarToken = (req, res, next) => {
+    try {
+		if (!req.headers.authorization) {
+			return res.status(401).send('Petición no autorizada');
+		}
+		let token = req.headers.authorization.split(' ')[1];
+		if (token === 'null') {
+			return res.status(401).send('Petición no autorizada');
+		}
+
+		const payload = await jwt.verify(token, 'secretkey');
+		if (!payload) {
+			return res.status(401).send('Petición no autorizada');
+		}
+		req.userId = payload._id;
+		next();
+	} catch(e) {
+		//console.log(e)
+		return res.status(401).send('Petición no autorizada');
+	}
+}
 
 module.exports = usuariosCtrol;
 
