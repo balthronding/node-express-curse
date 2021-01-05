@@ -21,13 +21,20 @@ notasCtrol.crearNota = async (req, res) =>{
     }
   
     if (errores.length > 0) {
-      res.json(errores);
+      res.json({
+        status : "KO",
+        respuesta : "No se ha generado la nota correctamente",
+        respuestas : errores
+      });
     }
     
     const newNota = new nota({ titulo, descripcion, enlace, puntuacion, precio, idUsuario });
     await newNota.save();
 
-    res.send("Se ha generado la nota");
+    res.json({
+      status : "OK",
+      respuesta : "Nota generada correctamente"
+    });
 }
 
 

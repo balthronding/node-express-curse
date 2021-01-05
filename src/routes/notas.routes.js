@@ -3,11 +3,13 @@ const { Router } = require('express');
 const router = Router();
 
 const controllerNotas = require('../controllers/notas.controllers');
+const verificarToken = require('../helpers/seguridad');
+require('../helpers/seguridad');
 
-router.post('/api/nota', controllerNotas.crearNota);
+router.post('/api/nota', verificarToken, controllerNotas.crearNota);
 
-router.get('/api/nota/:id', controllerNotas.obtenerNotas);
+router.get('/api/nota/:id', verificarToken, controllerNotas.obtenerNotas);
 
-router.delete('/api/nota/:id', controllerNotas.borrarNota);
+router.delete('/api/nota/:id',verificarToken, controllerNotas.borrarNota);
 
 module.exports = router;

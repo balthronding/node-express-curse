@@ -17,20 +17,27 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
     }
 
     if (errors.length > 0) {
-        res.json(errors);        
+        res.status(400).json({
+                status : 'KO',
+                respuesta : "Error al crear el usuario",
+                respuestas : errors
+
+            });        
     } else {
         const existeEmail = await usuario.findOne({ email: email });
         if (existeEmail) {
+            errors.push({text: "Este email ya está siendo utilizado"});
             res.status(400).json({
                 status : 'KO',
-                respuesta : 'El correo ya está en uso'
+                respuesta : "Error al crear el usuario",
+                respuestas : error
             });
         } else {
             //Creamos el usuario
             const newUser = new usuario({ nombre, email, pass });
             newUser.pass = await newUser.encriptar(pass);
             await newUser.save();
-            const token = jwt.sign({_id: newUser._id}, 'secretKey');
+            const token = jwt.sign({_id: newUser._id}, 'secretkey');
             res.json({
                 status : 'OK',
                 respuesta : 'Usuario creado',
@@ -85,7 +92,7 @@ usuariosCtrol.login = async (req, res) => {
         }); 
     }
 
-    const token = jwt.sign({_id: user._id}, 'secretKey');
+    const token = jwt.sign({_id: user._id}, 'secretkey');
     return res.json({
         status : "OK",
         respuesta : "Identificación correcta.",
@@ -98,26 +105,7 @@ usuariosCtrol.login = async (req, res) => {
     });
 }
 
-usuariosCtrol.verificarToken = async (req, res, next) => {
-    try {
-		if (!req.headers.authorization) {
-			return res.status(401).send('Solicitud no autorizada');
-		}
-		let token = req.headers.authorization.split(' ')[1];
-		if (token === 'null') {
-			return res.status(401).send('Solicitud no autorizada');
-		}
 
-		const payload = await jwt.verify(token, 'secretkey');
-		if (!payload) {
-			return res.status(401).send('Solicitud no autorizada');
-		}
-		req.userId = payload._id;
-		next();
-	} catch(e) {		
-		return res.status(401).send('Solicitud no autorizada');
-	}
-}
 
 module.exports = usuariosCtrol;
 
