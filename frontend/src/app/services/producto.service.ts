@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { INota } from '../interfaces/inota';
+import { IResponse } from '../interfaces/iresponse';
 import { IUser } from '../interfaces/iuser';
 import { AbstractRequestServiceService } from './abstract-request-service.service';
 import { AccountService } from './account.service';
@@ -39,10 +40,10 @@ export class NotasService extends AbstractRequestServiceService {
     });
   }
 
-  altaNota(nota: INota): Observable<INota[]> {
-    const idUsuario = this.getIdUser();
-    const url = this.getBaseURL() + "/api/nota/" + idUsuario;
-    return this.httpClient.post<INota[]>(url, nota, {
+  altaNota(nota: INota): Observable<IResponse> {
+    nota.idUsuario = this.getIdUser();
+    const url = this.getBaseURL() + "/api/nota/";
+    return this.httpClient.post<IResponse>(url, nota, {
       headers: this.getHeaders(this.token)
     });
   }
