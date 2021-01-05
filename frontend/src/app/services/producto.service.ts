@@ -1,23 +1,53 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { INota } from '../interfaces/inota';
+import { IUser } from '../interfaces/iuser';
+import { AbstractRequestServiceService } from './abstract-request-service.service';
+import { AccountService } from './account.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProductoService {
+export class NotasService extends AbstractRequestServiceService {
 
-  constructor(private httpClient:HttpClient) { }
+  private user: IUser;
+  private token: string;
 
-  deleteProducto(identificador:string):Observable<any>{
-    const url = "http://localhost:3000/api/nota/"+ identificador;
-    return this.httpClient.delete(url);
+  constructor(private httpClient: HttpClient, private accountService: AccountService) {
+    super();
+    this.accountService.getUser().subscribe(user =>
+      this.user = user);
+    this.accountService.getToken().subscribe(token =>
+      this.token = token);
   }
 
-  getProductos():Observable<INota[]>{
-    const idUsuario="5ff342bd2cae2e29342b4108";
-    const url = "http://localhost:3000/api/nota/"+ idUsuario;
-    return this.httpClient.get<INota[]>(url);
+  deleteNota(identificador: string): Observable<any> {
+    const url = this.getBaseURL() + "/api/nota/" + identificador;
+    return this.httpClient.delete(url, {
+      headers: this.getHeaders(this.token)
+    });
+  }
+
+  getNotas(): Observable<INota[]> {
+    //this.token='xxx';
+    const idUsuario = this.getIdUser();
+    const url = this.getBaseURL() + "/api/nota/" + idUsuario;
+    return this.httpClient.get<INota[]>(url, {
+      headers: this.getHeaders(this.token)
+    });
+  }
+
+  altaNota(nota: INota): Observable<INota[]> {
+    const idUsuario = this.getIdUser();
+    const url = this.getBaseURL() + "/api/nota/" + idUsuario;
+    return this.httpClient.post<INota[]>(url, nota, {
+      headers: this.getHeaders(this.token)
+    });
+  }
+
+  private getIdUser(): string {
+    return this.user.idUsuario;
   }
 }
