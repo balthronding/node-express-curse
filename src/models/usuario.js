@@ -21,7 +21,7 @@ const usuario = new Schema({
 
 //Crear método para encriptar la pass
 usuario.methods.encriptar = async pass => {
-    const salt = await bcryptjs.genSalt();
+    const salt = await bcryptjs.genSalt(10);    
     return await bcryptjs.hash(pass, salt);
 };
 

@@ -21,7 +21,7 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
     } else {
         const existeEmail = await usuario.findOne({ email: email });
         if (existeEmail) {
-            res.json({
+            res.status(400).json({
                 status : 'KO',
                 respuesta : 'El correo ya está en uso'
             });
@@ -34,6 +34,11 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
             res.json({
                 status : 'OK',
                 respuesta : 'Usuario creado',
+                usuario : {
+                    idUsuario : newUser._id,
+                    nombre : newUser.nombre,
+                    email : newUser.email
+                },
                 token : token
             });
         }
@@ -54,7 +59,7 @@ usuariosCtrol.eliminarUsuario = async (req, res) => {
         })
     })
     .catch(err => {
-        res.json({
+        res.status(500).json({
             status : "KO",
             respuesta : "Error en la BBDD."
         });
@@ -64,17 +69,17 @@ usuariosCtrol.eliminarUsuario = async (req, res) => {
 
 usuariosCtrol.login = async (req, res) => {
     const { email, pass } = req.body;
-
+    
     const user = await usuario.findOne({email});
     if(!user) {
-        return res.json({
+        return res.status(400).json({
             status : "KO",
             respuesta : "Identificación incorrecta."
         });
     }
 
-    if (user.pass != pass) {
-        return res.json({
+    if (!await user.matchPass(pass)) {
+        return res.status(400).json({
             status : "KO",
             respuesta : "Identificación incorrecta."
         }); 
@@ -84,11 +89,16 @@ usuariosCtrol.login = async (req, res) => {
     return res.json({
         status : "OK",
         respuesta : "Identificación correcta.",
+        usuario : {
+            idUsuario : user._id,
+            nombre : user.nombre,
+            email : user.email
+        },
         token : token
     });
 }
 
-usuariosCtrol.verificarToken = (req, res, next) => {
+usuariosCtrol.verificarToken = async (req, res, next) => {
     try {
 		if (!req.headers.authorization) {
 			return res.status(401).send('Solicitud no autorizada');
@@ -104,8 +114,7 @@ usuariosCtrol.verificarToken = (req, res, next) => {
 		}
 		req.userId = payload._id;
 		next();
-	} catch(e) {
-		//console.log(e)
+	} catch(e) {		
 		return res.status(401).send('Solicitud no autorizada');
 	}
 }

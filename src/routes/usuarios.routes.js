@@ -21,6 +21,8 @@ router.post('/api/usuarios', controllerUsuario.crearUsuario);
 
 router.delete('/api/usuarios/:id', controllerUsuario.eliminarUsuario);
 
+router.post('/api/login', controllerUsuario.login);
+
 
 
 module.exports = router;

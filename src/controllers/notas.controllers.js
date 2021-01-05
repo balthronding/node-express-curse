@@ -53,8 +53,6 @@ notasCtrol.obtenerNotas = async (req, res) =>{
   res.json(notas);
 }
 
-
-
 module.exports = notasCtrol;
 
 
