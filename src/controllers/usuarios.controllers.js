@@ -105,6 +105,62 @@ usuariosCtrol.login = async (req, res) => {
     });
 }
 
+usuariosCtrol.obtenerUsuario = async (req, res) => {
+    const user = await usuario.findById(req.params.id)
+    .then (db => {
+        res.json({
+            status : "OK",
+            respuesta : "Usuario tratado",
+            usuario : {
+                idUsuario : user._id,
+                nombre : user.nombre,
+                email : user.email
+            }     
+        })
+    })
+    .catch(err => {
+        res.status(500).json({
+            status : "KO",
+            respuesta : "Error en la BBDD."
+        });
+    });
+}
+
+usuariosCtrol.actualizarUsuario = async (req, res) => {
+    
+    let errors = [];
+    const { nombre, email, pass, confirm_pass } = req.body;
+    if (pass != confirm_pass) {
+        errors.push({ text: "Las constraseñas no coinciden." });
+    }
+
+    if (pass.length < 4) {
+        errors.push({ text: "La contraseña debe de tener al menos 4 caracteres." });
+    }
+
+    if (errors.length > 0) {
+        res.status(400).json({
+                status : 'KO',
+                respuesta : "Error al actualizar el usuario",
+                respuestas : errors
+
+            });        
+    } else {
+        await usuario.findByIdAndUpdate(req.params.id,  { nombre, email, pass})
+        .then (db => {
+            res.json({
+                status : "OK",
+                respuesta : "Usuario actualizado correctamente." 
+            })
+        })
+        .catch(err => {       
+            res.json({
+                status : "KO",
+                respuesta : "Error al actualizar la nota."
+            });
+        });
+    }   
+}
 
 
 module.exports = usuariosCtrol;

@@ -46,8 +46,7 @@ notasCtrol.borrarNota = async (req, res) => {
             respuesta : "Nota eliminada." 
         })
     })
-    .catch(err => {
-        console.log(err);
+    .catch(err => {       
         res.json({
             status : "KO",
             respuesta : "Error al borrar la nota."
@@ -58,6 +57,23 @@ notasCtrol.borrarNota = async (req, res) => {
 notasCtrol.obtenerNotas = async (req, res) =>{
   const notas = await nota.find({idUsuario : req.params.id});
   res.json(notas);
+}
+
+notasCtrol.actualizarNota = async (req, res) => {
+    const { titulo, descripcion, enlace, puntuacion, precio, idUsuario } = req.body;
+    await nota.findByIdAndUpdate(req.params.id,  { titulo, descripcion, enlace, puntuacion, precio, idUsuario })
+    .then (db => {
+      res.json({
+          status : "OK",
+          respuesta : "Nota actualizada correctamente." 
+      })
+  })
+  .catch(err => {       
+      res.json({
+          status : "KO",
+          respuesta : "Error al actualizar la nota."
+      });
+  });
 }
 
 module.exports = notasCtrol;

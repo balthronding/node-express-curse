@@ -6,6 +6,7 @@ const MONGODB_URL = `mongodb://${MONGODB_HOST}/${MONGODB_BBDD}`;
 
 mongoose.connect(MONGODB_URL, {
     useUnifiedTopology : true,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useFindAndModify: false
 }).then(db => console.log('Conectado a la BBDD'))
   .catch(err => console.error(err));  
