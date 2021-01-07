@@ -1,5 +1,7 @@
 export interface IUser {
-    name:string,
-    email:string,
-    password?:string
+    idUsuario?:string,
+    nombre:string,
+    email?:string,
+    pass?:string,
+    confirm_pass?:string
 }

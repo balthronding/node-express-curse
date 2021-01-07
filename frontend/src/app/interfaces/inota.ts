@@ -1,5 +1,5 @@
 export interface INota {
-    _id:string,
+    _id?:string,
     titulo: string,
     descripcion: string,
     idUsuario: string,
