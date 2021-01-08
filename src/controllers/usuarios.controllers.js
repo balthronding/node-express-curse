@@ -158,10 +158,11 @@ usuariosCtrol.actualizarUsuario = async (req, res) => {
                 respuesta : "Usuario actualizado correctamente." 
             })
         })
-        .catch(err => {       
+        .catch(err => {
+            console.log(err);       
             res.json({
                 status : "KO",
-                respuesta : "Error al actualizar la nota."
+                respuesta : "Error al actualizar el usuario."                
             });
         });
     }   
