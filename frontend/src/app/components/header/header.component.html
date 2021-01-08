@@ -7,8 +7,11 @@
     <a routerLink="/login" mat-icon-button aria-label="Inicio de sesión" title="Inicio de sesión" *ngIf="!hayUsuario()">
         <mat-icon>login</mat-icon>
     </a>
-    {{user.nombre}} <a mat-icon-button routerLink="/usuario" *ngIf="hayUsuario()"><mat-icon>account_box</mat-icon></a>
-    <button type="button" mat-icon-button *ngIf="hayUsuario()" aria-label="Cerrar sesión" title="Cerrar sesión" (click)="logout()">
+    <span *ngIf="hayUsuario()">{{user.nombre}} <a mat-icon-button routerLink="/usuario">
+            <mat-icon>account_box</mat-icon>
+        </a></span>
+    <button type="button" mat-icon-button *ngIf="hayUsuario()" aria-label="Cerrar sesión" title="Cerrar sesión"
+        (click)="logout()">
         <mat-icon>logout</mat-icon>
     </button>
 </mat-toolbar>
