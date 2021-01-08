@@ -3,9 +3,10 @@ const usuariosCtrol = {};
 //Modelo
 const usuario = require('../models/usuario');
 const jwt = require('jsonwebtoken');
-
+const TOKEN_SECRET = process.env.TOKEN_SECRET || 'secretkey';
 
 usuariosCtrol.crearUsuario = async (req, res) =>{
+
     let errors = [];
     const { nombre, email, pass, confirm_pass } = req.body;
     if (pass != confirm_pass) {
@@ -37,7 +38,9 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
             const newUser = new usuario({ nombre, email, pass });
             newUser.pass = await newUser.encriptar(pass);
             await newUser.save();
-            const token = jwt.sign({_id: newUser._id}, 'secretkey');
+            const token = jwt.sign({_id: newUser._id}, TOKEN_SECRET, {
+                expiresIn: 60*60
+            });
             res.json({
                 status : 'OK',
                 respuesta : 'Usuario creado',
@@ -92,7 +95,9 @@ usuariosCtrol.login = async (req, res) => {
         }); 
     }
 
-    const token = jwt.sign({_id: user._id}, 'secretkey');
+    const token = jwt.sign({_id: user._id}, TOKEN_SECRET, {
+        expiresIn: 60*60
+    });
     return res.json({
         status : "OK",
         respuesta : "Identificación correcta.",
