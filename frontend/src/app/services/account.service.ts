@@ -53,6 +53,22 @@ export class AccountService extends AbstractRequestServiceService {
     return obsService.asObservable();
   }
 
+  modificar(usuario: IUser, token: string): Observable<IResponse> {
+    const url = this.getBaseURL() + '/api/usuarios/' + usuario.idUsuario;
+    const obsService = new Subject<IResponse>();
+    const response: Observable<IResponseAccount> = this.httpClient
+      .put<IResponseAccount>(url, usuario, { headers: this.getHeaders(token) })
+      .pipe<IResponseAccount>(catchError(this.tratarError<IResponseAccount>(obsService)));
+
+
+    response.subscribe(responseAccount => {
+      this.setUser(usuario);
+      obsService.next(responseAccount);
+    })
+
+    return obsService.asObservable();
+  }
+
   private setToken(token: string) {
     if (token) {
       sessionStorage.setItem('token', token);
