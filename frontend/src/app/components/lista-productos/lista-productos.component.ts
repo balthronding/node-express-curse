@@ -25,7 +25,11 @@ export class ListaNotasComponent implements OnInit {
   }
 
   editarProducto(identificador: string): void {
-
+    this.router.navigate(['anadir-producto'], {
+      queryParams: {
+        identificador: identificador
+      }
+    });
   }
 
   deleteProducto(identificador: string): void {

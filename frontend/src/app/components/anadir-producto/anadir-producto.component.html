@@ -4,7 +4,7 @@
             <mat-card-title>Nueva nota</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-            <form fxLayout="column" fxLayoutAlign="center" [formGroup]="form" (ngSubmit)="altaNota()">
+            <form fxLayout="column" fxLayoutAlign="center" [formGroup]="form" (ngSubmit)="grabarNota()">
                 <mat-form-field fxFlex="90" appearance="fill">
                     <mat-label>Titulo</mat-label>
                     <input matInput required type="text" formControlName="titulo" />
