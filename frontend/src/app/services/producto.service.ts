@@ -55,6 +55,10 @@ export class NotasService extends AbstractRequestServiceService {
   }
 
   private getIdUser(): string {
+    if(!this.user){
+      this.accountService.getUser();
+      this.accountService.getToken();
+    }
     return this.user.idUsuario;
   }
 }

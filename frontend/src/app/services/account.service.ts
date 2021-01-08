@@ -24,14 +24,14 @@ export class AccountService extends AbstractRequestServiceService {
   }
 
   login(login: ILogin): Observable<IResponse> {
-    const url = this.getBaseURL()+'/api/login/';
+    const url = this.getBaseURL() + '/api/login/';
     const obsService = new Subject<IResponse>();
     const response: Observable<IResponseAccount> = this.httpClient.post<IResponseAccount>(url, login).pipe<IResponseAccount>(catchError(this.tratarError<IResponseAccount>(obsService)));
 
 
     response.subscribe(responseAccount => {
-      this.tokenSource.next(responseAccount.token);
-      this.userSource.next(responseAccount.usuario);
+      this.setToken(responseAccount.token);
+      this.setUser(responseAccount.usuario);
       obsService.next(responseAccount);
     })
 
@@ -39,27 +39,52 @@ export class AccountService extends AbstractRequestServiceService {
   }
 
   registro(usuario: IUser): Observable<IResponse> {
-    const url = this.getBaseURL()+'/api/usuarios/';
+    const url = this.getBaseURL() + '/api/usuarios/';
     const obsService = new Subject<IResponse>();
     const response: Observable<IResponseAccount> = this.httpClient.post<IResponseAccount>(url, usuario).pipe<IResponseAccount>(catchError(this.tratarError<IResponseAccount>(obsService)));
 
 
     response.subscribe(responseAccount => {
-      this.tokenSource.next(responseAccount.token);
-      this.userSource.next(responseAccount.usuario);
+      this.setToken(responseAccount.token);
+      this.setUser(responseAccount.usuario);
       obsService.next(responseAccount);
     })
 
     return obsService.asObservable();
   }
 
+  private setToken(token: string) {
+    sessionStorage.setItem('token', token);
+    this.tokenSource.next(token);
+  }
+
+  private setUser(user: IUser) {
+    sessionStorage.setItem('user', JSON.stringify(user));
+    this.userSource.next(user);
+  }
+
   getToken(): Observable<string> {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      this.setToken(token);
+    }
     return this.tokenObservable;
   }
 
   getUser(): Observable<IUser> {
+    const user = sessionStorage.getItem('user');
+    if (user) {
+      this.setUser(JSON.parse(user));
+    }
     return this.userObservable;
   }
+
+  logout() {
+    this.setToken(null);
+    this.setUser(null);
+  }
+
+
 
 
 }

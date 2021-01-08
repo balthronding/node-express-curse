@@ -24,6 +24,7 @@ import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from "@angular/forms";
+import { UsuarioComponent } from './components/usuario/usuario.component';
 
 
 
@@ -36,7 +37,8 @@ import { ReactiveFormsModule } from "@angular/forms";
     ListaNotasComponent,
     AnadirNotaComponent,
     HomeComponent,
-    HeaderComponent
+    HeaderComponent,
+    UsuarioComponent
   ],
   imports: [
     BrowserModule,
