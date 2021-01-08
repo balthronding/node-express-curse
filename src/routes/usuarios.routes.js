@@ -28,8 +28,6 @@ router.get('/api/usuarios/:id', controllerUsuario.obtenerUsuario);
 
 router.put('/api/usuarios/:id',controllerUsuario.actualizarUsuario);
 
-
-
 module.exports = router;
 
 
