@@ -54,12 +54,20 @@ export class AccountService extends AbstractRequestServiceService {
   }
 
   private setToken(token: string) {
-    sessionStorage.setItem('token', token);
+    if (token) {
+      sessionStorage.setItem('token', token);
+    } else {
+      sessionStorage.removeItem('token');
+    }
     this.tokenSource.next(token);
   }
 
   private setUser(user: IUser) {
-    sessionStorage.setItem('user', JSON.stringify(user));
+    if (user) {
+      sessionStorage.setItem('user', JSON.stringify(user));
+    } else {
+      sessionStorage.removeItem('user');
+    }
     this.userSource.next(user);
   }
 
