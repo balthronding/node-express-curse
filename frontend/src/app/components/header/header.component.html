@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="toolbar">
-    <a routerLink="/home" mat-icon-button aria-label="Menú">
+    <a [routerLink]="hayUsuario()?'lista-productos':'/login'" mat-icon-button aria-label="Menú">
         <mat-icon>home</mat-icon>
     </a>
     <span>Notas productos Amazon</span>
@@ -11,4 +11,7 @@
         <mat-icon>account_box</mat-icon>
     </a>
     <span *ngIf="hayUsuario()">{{user.nombre}} <mat-icon>account_box</mat-icon></span>
+    <button type="button" mat-icon-button *ngIf="hayUsuario()" aria-label="Cerrar sesión" title="Cerrar sesión" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+    </button>
 </mat-toolbar>
