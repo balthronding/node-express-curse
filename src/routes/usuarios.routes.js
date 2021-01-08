@@ -24,9 +24,9 @@ router.delete('/api/usuarios/:id', controllerUsuario.eliminarUsuario);
 
 router.post('/api/login', controllerUsuario.login);
 
-router.get('/api/usuarios/:id', controllerUsuario.obtenerUsuario);
+router.get('/api/usuarios/:id', verificarToken, controllerUsuario.obtenerUsuario);
 
-router.put('/api/usuarios/:id',controllerUsuario.actualizarUsuario);
+router.put('/api/usuarios/:id', verificarToken, controllerUsuario.actualizarUsuario);
 
 module.exports = router;
 

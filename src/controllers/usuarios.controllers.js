@@ -151,20 +151,26 @@ usuariosCtrol.actualizarUsuario = async (req, res) => {
 
             });        
     } else {
-        await usuario.findByIdAndUpdate(req.params.id,  { nombre, email, pass})
-        .then (db => {
-            res.json({
-                status : "OK",
-                respuesta : "Usuario actualizado correctamente." 
+        //const newUser = new usuario({ nombre, email, pass });        
+        //let pass_encriptada  = await newUser.encriptar(pass);
+        const user = await usuario.findById(req.params.id);
+        if (user) {
+            let pass_encriptada = await user.encriptar(pass);
+            await usuario.findByIdAndUpdate(req.params.id,  { nombre, email, pass : pass_encriptada})
+            .then (db => {
+                res.json({
+                    status : "OK",
+                    respuesta : "Usuario actualizado correctamente." 
+                })
             })
-        })
-        .catch(err => {
-            console.log(err);       
-            res.json({
-                status : "KO",
-                respuesta : "Error al actualizar el usuario."                
+            .catch(err => {
+                console.log(err);       
+                res.json({
+                    status : "KO",
+                    respuesta : "Error al actualizar el usuario."                
+                });
             });
-        });
+        }       
     }   
 }
 

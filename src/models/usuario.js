@@ -20,7 +20,7 @@ const usuario = new Schema({
 });
 
 //Crear método para encriptar la pass
-usuario.methods.encriptar = async pass => {
+usuario.methods.encriptar = async function (pass) {
     const salt = await bcryptjs.genSalt(10);    
     return await bcryptjs.hash(pass, salt);
 };
