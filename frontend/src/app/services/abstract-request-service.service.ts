@@ -3,7 +3,7 @@ import { Observable, Subject, throwError } from "rxjs";
 import { IResponse } from "../interfaces/iresponse";
 
 export abstract class AbstractRequestServiceService {
-  BASE_URL: string = 'http://192.168.1.70:3000';
+  readonly BASE_URL: string = 'http://192.168.1.70:3000';
 
   constructor() { }
 
