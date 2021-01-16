@@ -35,7 +35,7 @@ export class RegistroComponent implements OnInit {
           alert(responseAccount.respuesta);
         } else {
           alert(responseAccount.respuesta);
-          this.router.navigate(['login']);
+          this.router.navigate(['lista-notas']);
         }
       });
 
