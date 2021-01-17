@@ -31,7 +31,7 @@ usuariosCtrol.crearUsuario = async (req, res) =>{
             res.status(400).json({
                 status : 'KO',
                 respuesta : "Error al crear el usuario",
-                respuestas : error
+                respuestas : errors
             });
         } else {
             //Creamos el usuario
