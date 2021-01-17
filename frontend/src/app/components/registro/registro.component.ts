@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IResponse } from 'src/app/interfaces/iresponse';
 import { AccountService } from 'src/app/services/account.service';
+
 
 @Component({
   selector: 'app-registro',
@@ -32,7 +34,11 @@ export class RegistroComponent implements OnInit {
     if (this.form.valid) {
       this.accountService.registro(this.form.value).subscribe(responseAccount => {
         if (responseAccount.status != 'OK') {
-          alert(responseAccount.respuesta);
+          if (responseAccount.respuestas && responseAccount.respuestas.length > 0) {
+            alert(this.parsearRespuestas(responseAccount));
+          } else {
+            alert(responseAccount.respuesta);
+          }
         } else {
           alert(responseAccount.respuesta);
           this.router.navigate(['lista-notas']);
@@ -41,4 +47,18 @@ export class RegistroComponent implements OnInit {
 
     }
   }
+
+  parsearRespuestas(respuesta: IResponse): string {
+    let salida: string = '';
+    if (respuesta.respuestas && respuesta.respuestas.length > 0) {
+      for (const text of respuesta.respuestas) {
+        salida += text.text + '\n';
+      }
+    }
+
+    return salida;
+  }
+
 }
+
+
